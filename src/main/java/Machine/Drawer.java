@@ -29,8 +29,8 @@ public class Drawer {
         this.price = price;
     }
 
-    public void addProduct(Sweet sweet) {
-        this.products.add(sweet);
+    public void addProduct(Product product) {
+        this.products.add(product);
     }
 
     public int countProducts() {
