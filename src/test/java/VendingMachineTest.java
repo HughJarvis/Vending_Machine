@@ -78,14 +78,14 @@ public class VendingMachineTest {
 
     @Test
     public void canAddCoinToMachineifCoinValid() {
-        vendingMachine.addCoin(coin50);
-        assertEquals(1, vendingMachine.countCoins());
+        vendingMachine.payInCoin(coin50);
+        assertEquals(1, vendingMachine.countCoinsPaidIn());
     }
 
     @Test
     public void wontAddCoinToMachineIfNotValid() {
-        vendingMachine.addCoin(coin2);
-        assertEquals(0, vendingMachine.countCoins());
+        vendingMachine.payInCoin(coin2);
+        assertEquals(0, vendingMachine.countCoinsPaidIn());
     }
 
     @Test
@@ -108,5 +108,23 @@ public class VendingMachineTest {
         assertEquals(false, vendingMachine.checkCoinIsValid(coin1));
     }
 
+
+    @Test
+    public void canCountProductsInMachine() {
+        assertEquals(9, vendingMachine.countProducts());
+    }
+
+    @Test
+    public void canCalculateChange() {
+    }
+
+    @Test
+    public void canBuyProductIfEnoughInMachine() {
+        vendingMachine.addCoin(coin10);
+        vendingMachine.addCoin(coin20);
+        vendingMachine.addCoin(coin50);
+        vendingMachine.buyProduct(DrawerCode.A2);
+        assertEquals(8, vendingMachine.countProducts());
+    }
 }
 
