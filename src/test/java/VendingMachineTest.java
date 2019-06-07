@@ -77,9 +77,15 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void canAddCoinToMachine() {
+    public void canAddCoinToMachineifCoinValid() {
         vendingMachine.addCoin(coin50);
         assertEquals(1, vendingMachine.countCoins());
+    }
+
+    @Test
+    public void wontAddCoinToMachineIfNotValid() {
+        vendingMachine.addCoin(coin2);
+        assertEquals(0, vendingMachine.countCoins());
     }
 
     @Test

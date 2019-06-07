@@ -37,7 +37,9 @@ public class VendingMachine {
     }
 
     public void addCoin(Coin coin) {
-        this.coins.add(coin);
+        if (checkCoinIsValid(coin)) {
+            this.coins.add(coin);
+        }
     }
 
     public boolean checkCoinIsValid(Coin coin){
