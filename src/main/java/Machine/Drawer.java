@@ -36,4 +36,8 @@ public class Drawer {
     public int countProducts() {
         return this.products.size();
     }
+
+    public Product returnProduct() {
+        return this.products.remove(0);
+    }
 }

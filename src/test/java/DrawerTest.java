@@ -38,4 +38,13 @@ public class DrawerTest {
         drawer.addProduct(sweet);
         assertEquals(1, drawer.countProducts());
     }
+
+    @Test
+    public void canReturnProduct() {
+        drawer.addProduct(sweet);
+        drawer.addProduct(sweet);
+        drawer.returnProduct();
+        assertEquals(1, drawer.countProducts());
+        assertEquals(sweet, drawer.returnProduct());
+    }
 }
