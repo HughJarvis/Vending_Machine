@@ -47,12 +47,6 @@ public class VendingMachine {
         this.coins.add(coin);
     }
 
-    public void payInCoin(Coin coin) {
-        if (checkCoinIsValid(coin)) {
-            this.coinsPaidIn.add(coin);
-        }
-    }
-
     public int getValueOfCoinsPaidIn() {
         int totalPaidIn = 0;
         for (Coin coin : this.coinsPaidIn) {
@@ -66,6 +60,13 @@ public class VendingMachine {
         return ((coin.getCoinValue() != 1) && (coin.getCoinValue() != 2));
     }
 
+    public void payInCoin(Coin coin) {
+        if (checkCoinIsValid(coin)) {
+            this.coinsPaidIn.add(coin);
+        }
+        this.coinReturn.addCoin(coin);
+    }
+
     public int countProducts() {
         int totalProducts = 0;
         for (Drawer drawer : this.drawers) {
@@ -75,22 +76,25 @@ public class VendingMachine {
     }
 
     public boolean checkEnoughPaidIn(DrawerCode drawerCode) {
-            boolean enoughPaidIn = false;
         for (Drawer drawer : this.drawers) {
             if (drawer.getDrawerCode() == drawerCode) {
-                enoughPaidIn = (this.getValueOfCoinsPaidIn() >= drawer.getPrice());
+               return (this.getValueOfCoinsPaidIn() >= drawer.getPrice());
             }
         }
-        return enoughPaidIn;
+        return false;
     }
 
 
-        public Product buyProduct (DrawerCode drawerCode){
+        public Product buyProduct (DrawerCode drawerCode) {
             Product returnedProduct = null;
+        if (this.checkEnoughPaidIn(drawerCode)) {
 
-            for (Drawer drawer : this.drawers) {
-                if (drawer.getDrawerCode() == drawerCode) {
-                    returnedProduct = drawer.returnProduct();
+
+                for (Drawer drawer : this.drawers) {
+                    if (drawer.getDrawerCode() == drawerCode) {
+                        returnedProduct = drawer.returnProduct();
+                    }
+
                 }
 
             }
@@ -98,7 +102,8 @@ public class VendingMachine {
         }
 
 
-
-
+    public int countCoinsInCoinReturn() {
+        return this.coinReturn.countCoins();
+    }
 }
 
