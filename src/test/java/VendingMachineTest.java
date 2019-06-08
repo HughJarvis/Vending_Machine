@@ -1,4 +1,3 @@
-import Machine.CoinReturn;
 import Machine.Drawer;
 import Machine.DrawerCode;
 import Machine.VendingMachine;
@@ -21,7 +20,6 @@ public class VendingMachineTest {
     private Sweet sweet;
     private Drink drink;
     private Crisps crisps;
-    private CoinReturn coinReturn;
     private VendingMachine vendingMachine;
     private Coin coin1;
     private Coin coin2;
@@ -79,13 +77,20 @@ public class VendingMachineTest {
     @Test
     public void canPayInCoinToMachineifCoinValid() {
         vendingMachine.payInCoin(coin50);
-        assertEquals(1, vendingMachine.countCoinsPaidIn());
+        assertEquals(1, vendingMachine.countCoinsInCoinsCredit());
+    }
+
+    @Test
+    public void canAddCoinToTakings() {
+        vendingMachine.addCoin(coin100);
+        assertEquals(1, vendingMachine.countCoinsInTakings());
+        assertEquals(100, vendingMachine.getTakingsValue());
     }
 
     @Test
     public void wontPayInCoinToMachineIfNotValid() {
         vendingMachine.payInCoin(coin2);
-        assertEquals(0, vendingMachine.countCoinsPaidIn());
+        assertEquals(0, vendingMachine.countCoinsInCoinsCredit());
     }
 
     @Test
@@ -97,10 +102,11 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void canCountCoinsInMachine() {
+    public void canCountMachineTakings() {
         vendingMachine.addCoin(coin10);
         vendingMachine.addCoin(coin20);
-        assertEquals(2, vendingMachine.countCoins());
+        assertEquals(2, vendingMachine.countCoinsInTakings());
+        assertEquals(30, vendingMachine.getTakingsValue());
     }
 
     @Test
@@ -109,11 +115,24 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void canGetBalance() {
+    public void canGetMachineTakings() {
         vendingMachine.addCoin(coin10);
         vendingMachine.addCoin(coin20);
         vendingMachine.addCoin(coin50);
-        assertEquals(80, vendingMachine.getBalance());
+        assertEquals(80, vendingMachine.getTakingsValue());
+    }
+
+    @Test
+    public void canGetCoinCreditValue() {
+        vendingMachine.payInCoin(coin10);
+        vendingMachine.payInCoin(coin20);
+        vendingMachine.payInCoin(coin50);
+        assertEquals(80, vendingMachine.getCoinsCreditValue());
+    }
+
+    @Test
+    public void canGetCoinReturnValue() {
+
     }
 
     @Test

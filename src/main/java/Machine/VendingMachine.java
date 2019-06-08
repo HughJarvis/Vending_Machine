@@ -7,16 +7,16 @@ import java.util.ArrayList;
 
 public class VendingMachine {
 
-    private ArrayList<Coin> coins;
+    private ArrayList<Coin> takings;
     private ArrayList<Drawer> drawers;
     private CoinReturn coinReturn;
-    private ArrayList<Coin> coinsPaidIn;
+    private ArrayList<Coin> coinsCredit;
 
     public VendingMachine() {
-        this.coins = new ArrayList<Coin>();
+        this.takings = new ArrayList<Coin>();
         this.drawers = new ArrayList<Drawer>();
         this.coinReturn = new CoinReturn();
-        this.coinsPaidIn = new ArrayList<Coin>();
+        this.coinsCredit = new ArrayList<Coin>();
     }
 
     public void addDrawer(Drawer drawer) {
@@ -27,32 +27,40 @@ public class VendingMachine {
         return this.drawers.size();
     }
 
-    public int countCoins() {
-        return this.coins.size();
+    public int countCoinsInTakings() {
+        return this.takings.size();
     }
 
-    public int countCoinsPaidIn() {
-        return this.coinsPaidIn.size();
+    public int countCoinsInCoinsCredit() {
+        return this.coinsCredit.size();
     }
 
-    public int getBalance() {
+    public int countCoinsInCoinReturn() {
+        return this.coinReturn.countCoins();
+    }
+
+    public int getBalance(ArrayList<Coin> coins) {
         int total = 0;
-        for (Coin coin : this.coins) {
+        for (Coin coin : coins) {
             total += coin.getCoinValue();
         }
         return total;
     }
 
     public void addCoin(Coin coin) {
-        this.coins.add(coin);
+        this.takings.add(coin);
     }
 
-    public int getValueOfCoinsPaidIn() {
-        int totalPaidIn = 0;
-        for (Coin coin : this.coinsPaidIn) {
-            totalPaidIn += coin.getCoinValue();
-        }
-        return totalPaidIn;
+    public int getCoinsCreditValue() {
+        return getBalance(this.coinsCredit);
+    }
+
+    public int getTakingsValue() {
+        return getBalance(this.takings);
+    }
+
+    public int getCoinReturnValue() {
+        return getBalance(this.coinReturn.getCoins());
     }
 
 
@@ -62,7 +70,7 @@ public class VendingMachine {
 
     public void payInCoin(Coin coin) {
         if (checkCoinIsValid(coin)) {
-            this.coinsPaidIn.add(coin);
+            this.coinsCredit.add(coin);
         }
         this.coinReturn.addCoin(coin);
     }
@@ -78,7 +86,7 @@ public class VendingMachine {
     public boolean checkEnoughPaidIn(DrawerCode drawerCode) {
         for (Drawer drawer : this.drawers) {
             if (drawer.getDrawerCode() == drawerCode) {
-               return (this.getValueOfCoinsPaidIn() >= drawer.getPrice());
+               return (this.getCoinsCreditValue() >= drawer.getPrice());
             }
         }
         return false;
@@ -88,22 +96,16 @@ public class VendingMachine {
         public Product buyProduct (DrawerCode drawerCode) {
             Product returnedProduct = null;
         if (this.checkEnoughPaidIn(drawerCode)) {
-
-
                 for (Drawer drawer : this.drawers) {
                     if (drawer.getDrawerCode() == drawerCode) {
                         returnedProduct = drawer.returnProduct();
                     }
-
                 }
-
             }
             return returnedProduct;
         }
 
 
-    public int countCoinsInCoinReturn() {
-        return this.coinReturn.countCoins();
-    }
+
 }
 
