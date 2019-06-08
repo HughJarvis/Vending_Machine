@@ -1,8 +1,7 @@
 import Machine.Drawer;
 import Machine.DrawerCode;
 import Machine.VendingMachine;
-import Money.Coin;
-import Money.CoinType;
+import Money.*;
 import Products.Crisps;
 import Products.Drink;
 import Products.Sweet;
@@ -52,14 +51,14 @@ public class VendingMachineTest {
         vendingMachine.addDrawer(drawerA2);
         vendingMachine.addDrawer(drawerA3);
 
-        coin1 = new Coin(CoinType.ONE);
-        coin2 = new Coin(CoinType.TWO);
-        coin5 = new Coin(CoinType.FIVE);
-        coin10 = new Coin(CoinType.TEN);
-        coin20 = new Coin(CoinType.TWENTY);
-        coin50 = new Coin(CoinType.FIFTY);
-        coin100 = new Coin(CoinType.ONEPOUND);
-        coin200 = new Coin(CoinType.TWOPOUND);
+        coin1 = new Penny();
+        coin2 = new TwoPence();
+        coin5 = new FivePence();
+        coin10 = new TenPence();
+        coin20 = new TwentyPence();
+        coin50 = new FiftyPence();
+        coin100 = new OnePound();
+        coin200 = new TwoPound();
 
     }
 

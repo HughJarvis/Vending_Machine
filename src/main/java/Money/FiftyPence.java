@@ -1,7 +1,7 @@
 package Money;
 
 public class FiftyPence extends Coin {
-    public FiftyPence(CoinType coinType) {
+    public FiftyPence() {
         super(CoinType.FIFTY);
     }
 }

@@ -1,6 +1,5 @@
 import Machine.CoinReturn;
-import Money.Coin;
-import Money.CoinType;
+import Money.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,9 +14,9 @@ public class CoinReturnTest {
 
     @Before
     public void setUp(){
-        coin1 = new Coin(CoinType.TEN);
-        coin2 = new Coin(CoinType.TWENTY);
-        coin3 = new Coin(CoinType.FIFTY);
+        coin1 = new TenPence();
+        coin2 = new TwentyPence();
+        coin3 = new FiftyPence();
         coinReturn = new CoinReturn();
     }
 

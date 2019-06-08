@@ -1,7 +1,7 @@
 package Money;
 
 public class TwoPound extends Coin {
-    public TwoPound(CoinType coinType) {
+    public TwoPound() {
         super(CoinType.TWOPOUND);
     }
 }
