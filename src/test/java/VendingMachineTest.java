@@ -82,9 +82,16 @@ public class VendingMachineTest {
 
     @Test
     public void canAddCoinToTakings() {
-        vendingMachine.addCoin(coin100);
+        vendingMachine.addCoinToTakings(coin100);
         assertEquals(1, vendingMachine.countCoinsInTakings());
         assertEquals(100, vendingMachine.getTakingsValue());
+    }
+
+    @Test
+    public void canAddCoinToCoinReturn() {
+        vendingMachine.addCoinToCoinReturn(coin20);
+        assertEquals(1, vendingMachine.countCoinsInCoinReturn());
+        assertEquals(20, vendingMachine.getCoinReturnValue());
     }
 
     @Test
@@ -103,8 +110,8 @@ public class VendingMachineTest {
 
     @Test
     public void canCountMachineTakings() {
-        vendingMachine.addCoin(coin10);
-        vendingMachine.addCoin(coin20);
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.addCoinToTakings(coin20);
         assertEquals(2, vendingMachine.countCoinsInTakings());
         assertEquals(30, vendingMachine.getTakingsValue());
     }
@@ -116,9 +123,9 @@ public class VendingMachineTest {
 
     @Test
     public void canGetMachineTakings() {
-        vendingMachine.addCoin(coin10);
-        vendingMachine.addCoin(coin20);
-        vendingMachine.addCoin(coin50);
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.addCoinToTakings(coin20);
+        vendingMachine.addCoinToTakings(coin50);
         assertEquals(80, vendingMachine.getTakingsValue());
     }
 
@@ -132,6 +139,7 @@ public class VendingMachineTest {
 
     @Test
     public void canGetCoinReturnValue() {
+
 
     }
 
@@ -151,12 +159,48 @@ public class VendingMachineTest {
     }
 
     @Test
+    public void canMoveCoinFromTakingsToCoinReturn() {
+        vendingMachine.addCoinToTakings(coin20);
+        vendingMachine.addCoinToTakings(coin50);
+        vendingMachine.moveCoinToCoinReturn(coin20);
+        assertEquals(1, vendingMachine.countCoinsInCoinReturn());
+        assertEquals(20, vendingMachine.getCoinReturnValue());
+    }
+
+    @Test
+    public void canMoveCoinFromCoinCreditToTakings() {
+        vendingMachine.payInCoin(coin200);
+        vendingMachine.moveCoinToTakings(coin200);
+        assertEquals(1, vendingMachine.countCoinsInTakings());
+        assertEquals(200, vendingMachine.getTakingsValue());
+    }
+
+    @Test
+    public void canRemoveAllCoinsFromCoinsCredit() {
+        vendingMachine.removeCoinsCredit();
+        assertEquals(0, vendingMachine.countCoinsInCoinsCredit());
+    }
+
+        @Test
+    public void canMoveAllCoinsFromCoinCreditToTakings() {
+        vendingMachine.payInCoin(coin10);
+        vendingMachine.payInCoin(coin20);
+        vendingMachine.payInCoin(coin50);
+        vendingMachine.moveCoinsCreditToTakings();
+        assertEquals(3, vendingMachine.countCoinsInTakings());
+        assertEquals(80, vendingMachine.getTakingsValue());
+    }
+
+    @Test
     public void canBuyProductIfEnoughPaidIn() {
         vendingMachine.payInCoin(coin10);
         vendingMachine.payInCoin(coin20);
         vendingMachine.payInCoin(coin50);
         vendingMachine.buyProduct(DrawerCode.A2);
         assertEquals(8, vendingMachine.countProducts());
+        assertEquals(80, vendingMachine.getTakingsValue());
+        assertEquals(3, vendingMachine.countCoinsInTakings());
+        assertEquals(0, vendingMachine.countCoinsInCoinsCredit());
     }
 
     @Test

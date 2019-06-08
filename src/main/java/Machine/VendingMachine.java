@@ -47,7 +47,7 @@ public class VendingMachine {
         return total;
     }
 
-    public void addCoin(Coin coin) {
+    public void addCoinToTakings(Coin coin) {
         this.takings.add(coin);
     }
 
@@ -75,6 +75,11 @@ public class VendingMachine {
         this.coinReturn.addCoin(coin);
     }
 
+    public Coin removeCoinFromCoinsCredit(Coin coin){
+        int index = this.coinsCredit.indexOf(coin);
+        return this.coinsCredit.remove(index);
+    }
+
     public int countProducts() {
         int totalProducts = 0;
         for (Drawer drawer : this.drawers) {
@@ -92,20 +97,49 @@ public class VendingMachine {
         return false;
     }
 
-
-        public Product buyProduct (DrawerCode drawerCode) {
-            Product returnedProduct = null;
+    public Product buyProduct (DrawerCode drawerCode) {
+// tried putting this.moveCoinsCreditToTakings(); in here but test failed on number of products check???????
+        Product returnedProduct = null;
         if (this.checkEnoughPaidIn(drawerCode)) {
-                for (Drawer drawer : this.drawers) {
-                    if (drawer.getDrawerCode() == drawerCode) {
+            for (Drawer drawer : this.drawers) {
+                if (drawer.getDrawerCode() == drawerCode) {
                         returnedProduct = drawer.returnProduct();
-                    }
                 }
             }
-            return returnedProduct;
         }
+        this.moveCoinsCreditToTakings();  //works down here
+            return returnedProduct;
+    }
 
 
+    public void addCoinToCoinReturn(Coin coin) {
+        this.coinReturn.addCoin(coin);
+    }
 
+    public void moveCoinToTakings(Coin coin) {
+        Coin movedCoin = this.removeCoinFromCoinsCredit(coin);
+        this.addCoinToTakings(movedCoin);
+
+    }
+
+    public ArrayList<Coin> removeCoinsCredit() {
+        ArrayList<Coin> removedCoins = ((ArrayList<Coin>) this.coinsCredit.clone());
+        this.coinsCredit.clear();
+        return removedCoins;
+    }
+
+    public void moveCoinsCreditToTakings() {
+        this.takings.addAll(this.removeCoinsCredit());
+    }
+
+    public void moveCoinToCoinReturn(Coin coin) {
+        Coin movedCoin = this.removeCoinFromTakings(coin);
+        this.addCoinToCoinReturn(movedCoin);
+    }
+
+    private Coin removeCoinFromTakings(Coin coin) {
+        int index = this.takings.indexOf(coin);
+        return this.takings.remove(index);
+    }
 }
 
