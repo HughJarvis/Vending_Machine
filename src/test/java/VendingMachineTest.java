@@ -227,6 +227,30 @@ public class VendingMachineTest {
         assertEquals(9, vendingMachine.countProducts());
     }
 
+    @Test
+    public void canGetNumberOf100sInChange() {
+        assertEquals(1, vendingMachine.getNumberOf100sInChange(120));
+    }
+
+    @Test
+    public void canGetNumberOf50sInChange() {
+        assertEquals(2, vendingMachine.getNumberOf50sInChange(120));
+    }
+
+    @Test
+    public void canGetNumberOf20sInChange() {
+        assertEquals(6, vendingMachine.getNumberOf20sInChange(120));
+    }
+
+    @Test
+    public void canGetNumberOf10sInChange() {
+        assertEquals(12, vendingMachine.getNumberOf10sInChange(120));
+    }
+
+    @Test
+    public void canGetNumberOf5sInChange() {
+        assertEquals(4, vendingMachine.getNumberOf5sInChange(20));
+    }
 
 }
 

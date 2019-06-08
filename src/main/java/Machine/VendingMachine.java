@@ -149,5 +149,26 @@ public class VendingMachine {
         }
         return change;
     }
+
+
+    public int getNumberOf100sInChange(int change) {
+        return change / 100;
+    }
+
+    public int getNumberOf50sInChange(int change) {
+        return change / 50;
+    }
+
+    public int getNumberOf20sInChange(int change) {
+        return change / 20;
+    }
+
+    public int getNumberOf10sInChange(int change) {
+        return change / 10;
+    }
+
+    public int getNumberOf5sInChange(int change) {
+        return change / 5;
+    }
 }
 

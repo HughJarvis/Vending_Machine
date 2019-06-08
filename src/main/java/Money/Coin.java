@@ -1,6 +1,6 @@
 package Money;
 
-public class Coin {
+public abstract class Coin {
 
     private CoinType coinType;
 
