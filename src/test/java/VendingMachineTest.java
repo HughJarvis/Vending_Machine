@@ -139,8 +139,9 @@ public class VendingMachineTest {
 
     @Test
     public void canGetCoinReturnValue() {
-
-
+        vendingMachine.payInCoin(coin2);
+        vendingMachine.payInCoin(coin2);
+        assertEquals(4, vendingMachine.getCoinReturnValue());
     }
 
     @Test
@@ -155,7 +156,13 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void canCalculateChange() {
+    public void canCheckEnoughPaidIn() {
+        vendingMachine.payInCoin(coin10);
+        vendingMachine.payInCoin(coin20);
+        vendingMachine.payInCoin(coin50);
+        assertEquals(true, vendingMachine.checkEnoughPaidIn(DrawerCode.A1));
+        assertEquals(true, vendingMachine.checkEnoughPaidIn(DrawerCode.A2));
+        assertEquals(false, vendingMachine.checkEnoughPaidIn(DrawerCode.A3));
     }
 
     @Test
@@ -192,6 +199,14 @@ public class VendingMachineTest {
     }
 
     @Test
+    public void canCalculateChange() {
+        vendingMachine.payInCoin(coin10);
+        vendingMachine.payInCoin(coin20);
+        vendingMachine.payInCoin(coin50);
+        assertEquals(15, vendingMachine.calculateChange(DrawerCode.A2));
+    }
+
+    @Test
     public void canBuyProductIfEnoughPaidIn() {
         vendingMachine.payInCoin(coin10);
         vendingMachine.payInCoin(coin20);
@@ -211,5 +226,7 @@ public class VendingMachineTest {
         vendingMachine.buyProduct(DrawerCode.A2);
         assertEquals(9, vendingMachine.countProducts());
     }
+
+
 }
 

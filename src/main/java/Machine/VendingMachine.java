@@ -119,7 +119,6 @@ public class VendingMachine {
     public void moveCoinToTakings(Coin coin) {
         Coin movedCoin = this.removeCoinFromCoinsCredit(coin);
         this.addCoinToTakings(movedCoin);
-
     }
 
     public ArrayList<Coin> removeCoinsCredit() {
@@ -140,6 +139,15 @@ public class VendingMachine {
     private Coin removeCoinFromTakings(Coin coin) {
         int index = this.takings.indexOf(coin);
         return this.takings.remove(index);
+    }
+
+    public int calculateChange(DrawerCode drawerCode) {
+        int change = 0;
+        for (Drawer drawer : this.drawers){
+            if (drawer.getDrawerCode() == drawerCode)
+                change = getCoinsCreditValue() - drawer.getPrice();
+        }
+        return change;
     }
 }
 
