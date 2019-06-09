@@ -158,12 +158,14 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void canMoveCoinFromTakingsToCoinReturn() {
+    public void canMoveTenFromTakingsToCoinReturn() {
         vendingMachine.addCoinToTakings(coin20);
         vendingMachine.addCoinToTakings(coin50);
-        vendingMachine.moveCoinFromTakingsToCoinReturn(coin20);
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.moveTenFromTakingsToCoinReturn();
         assertEquals(1, vendingMachine.countCoinsInCoinReturn());
-        assertEquals(20, vendingMachine.getCoinReturnValue());
+        assertEquals(10, vendingMachine.getCoinReturnValue());
    }
 
     @Test
@@ -267,6 +269,14 @@ public class VendingMachineTest {
             assertEquals(4, vendingMachine.getNumberOf5sInChange(20));
         }
 
+    @Test
+    public void canRemoveMultipleTensFromTakings() {
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.addCoinToTakings(coin10);
+        vendingMachine.removeMultipleTensFromTakings(2);
+        assertEquals(10, vendingMachine.countTakings());
     }
+}
 
 

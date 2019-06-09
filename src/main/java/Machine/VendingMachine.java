@@ -156,7 +156,6 @@ public class VendingMachine {
                 }
             }
         }
-         //works down here
             return returnedProduct;
     }
 
@@ -182,19 +181,58 @@ public class VendingMachine {
     }
 
 
-    public Coin removeCoinFromTakings(Coin coin) {
-        if (coin.getCoinType() == CoinType.FIVE) {
-           return this.fives.remove(0);
-        } else if (coin.getCoinType() == CoinType.TEN) {
-            return this.tens.remove(0);
-        } else if (coin.getCoinType() == CoinType.TWENTY) {
-            return this.twenties.remove(0);
-        } else if (coin.getCoinType() == CoinType.FIFTY) {
-            return this.fifties.remove(0);
-        } else if (coin.getCoinType() == CoinType.ONEPOUND) {
-            return this.pounds.remove(0);
+    public Coin removeFiveFromTakings() {
+        Coin removedCoin = null;
+        if (this.fives.size() > 0) {
+            removedCoin = this.fives.get(this.fives.size()-1);
+            this.fives.remove(this.fives.size()-1);
         }
-        return this.twoPounds.remove(0);
+        return removedCoin;
+        }
+
+    public Coin removeTenFromTakings() {
+            Coin removedCoin = null;
+        if (this.tens.size() > 0) {
+            removedCoin = this.tens.get(this.tens.size()-1);
+            this.tens.remove(this.tens.size()-1);
+        }
+        return removedCoin;
+    }
+
+    public Coin removeTwentyFromTakings() {
+        Coin removedCoin = null;
+        if (this.twenties.size() > 0) {
+            removedCoin = this.twenties.get(this.twenties.size()-1);
+            this.twenties.remove(this.twenties.size()-1);
+        }
+        return removedCoin;
+    }
+
+    public Coin removeFiftyFromTakings() {
+        Coin removedCoin = null;
+        if (this.fifties.size() > 0) {
+            removedCoin = this.fifties.get(this.fifties.size()-1);
+            this.fifties.remove(this.fifties.size()-1);
+        }
+        return removedCoin;
+    }
+
+    public Coin removePoundFromTakings() {
+    Coin removedCoin = null;
+        if (this.pounds.size() > 0) {
+        removedCoin = this.pounds.get(this.pounds.size()-1);
+        this.pounds.remove(this.pounds.size()-1);
+        }
+        return removedCoin;
+    }
+
+    public Coin removeTwoPoundFromTakings()   {
+        Coin removedCoin = null;
+        if (this.twoPounds.size() > 0) {
+            removedCoin = this.twoPounds.get(this.twoPounds.size()-1);
+            this.twoPounds.remove(this.twoPounds.size()-1);
+        }
+        return removedCoin;
     }
 
 
@@ -212,14 +250,9 @@ public class VendingMachine {
     }
 
     public void moveFiveToCoinReturn() {
-        FivePence movedCoin = this.fives.remove(0);
+        FivePence movedCoin = this.fives.remove(this.fives.size()-1);
         this.addCoinToCoinReturn(movedCoin);
     }
-
-
-
-
-
 
     public int calculateChange(DrawerCode drawerCode) {
         int change = 0;
@@ -260,7 +293,6 @@ public class VendingMachine {
                 this.twoPounds.size();
     }
 
-
     public int countTakings() {
        return this.fives.size()*5 +
         this.tens.size()*10 +
@@ -270,13 +302,83 @@ public class VendingMachine {
         this.twoPounds.size()*200;
     }
 
-    public void moveCoinFromTakingsToCoinReturn(Coin coin) {
-        Coin movedCoin = this.removeCoinFromTakings(coin);
+    public void moveTenFromTakingsToCoinReturn() {
+        Coin movedCoin = this.removeTenFromTakings();
         this.addCoinToCoinReturn(movedCoin);
     }
 
     public void clearCoinsCredit() {
         this.getCoinsCredit().clear();
     }
+
+    public ArrayList<Coin> removeMultipleFivesFromTakings(int numberToRemove) {
+        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            this.removeTwentyFromTakings();
+            coinsRemoved += 1;
+        }
+        return removedCoins;
+    }
+
+    public ArrayList<Coin> removeMultipleTensFromTakings(int numberToRemove) {
+        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            this.removeTenFromTakings();
+            coinsRemoved += 1;
+        }
+        return removedCoins;
+    }
+
+    public ArrayList<Coin> removeMultipleTwentiesFromTakings(int numberToRemove) {
+        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            removeTwentyFromTakings();
+            coinsRemoved += 1;
+        }
+        return removedCoins;
+    }
+
+    public ArrayList<Coin> removeMultipleFiftiesFromTakings(int numberToRemove) {
+        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            this.removeFiftyFromTakings();
+            coinsRemoved += 1;
+        }
+        return removedCoins;
+    }
+
+    public ArrayList<Coin> removeMultiplePoundsFromTakings(int numberToRemove) {
+        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            this.removePoundFromTakings();
+            coinsRemoved += 1;
+        }
+        return removedCoins;
+    }
+
+    public ArrayList<Coin> moveMultipleTwoPoundsFromTakingsToCoinReturn(int numberToRemove) {
+        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            this.removeTwoPoundFromTakings();
+            coinsRemoved += 1;
+        }
+        return removedCoins;
+    }
+
+
+
+//    public int putCorrectChangeInCoinReturn(int change) {
+//        int numberOfCoins = this.getNumberOf100sInChange(change);
+//        int coinsRemoved = 0;
+//
+//        int changeLeft = change % 100;
+//        return changeLeft;
+//    }
 }
 
