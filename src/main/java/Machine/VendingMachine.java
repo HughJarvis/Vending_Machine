@@ -1,19 +1,29 @@
 package Machine;
 
-import Money.Coin;
+import Money.*;
 import Products.Product;
 
 import java.util.ArrayList;
 
 public class VendingMachine {
 
-    private ArrayList<Coin> takings;
+    private ArrayList<FivePence> fives;
+    private ArrayList<TenPence> tens;
+    private ArrayList<TwentyPence> twenties;
+    private ArrayList<FiftyPence> fifties;
+    private ArrayList<OnePound> pounds;
+    private ArrayList<TwoPound> twoPounds;
     private ArrayList<Drawer> drawers;
     private CoinReturn coinReturn;
     private ArrayList<Coin> coinsCredit;
 
     public VendingMachine() {
-        this.takings = new ArrayList<Coin>();
+        this.fives = new ArrayList<FivePence>();
+        this.tens = new ArrayList<TenPence>();
+        this.twenties = new ArrayList<TwentyPence>();
+        this.fifties = new ArrayList<FiftyPence>();
+        this.pounds = new ArrayList<OnePound>();
+        this.twoPounds = new ArrayList<TwoPound>();
         this.drawers = new ArrayList<Drawer>();
         this.coinReturn = new CoinReturn();
         this.coinsCredit = new ArrayList<Coin>();
@@ -27,16 +37,48 @@ public class VendingMachine {
         return this.drawers.size();
     }
 
-    public int countCoinsInTakings() {
-        return this.takings.size();
+    public ArrayList<Coin> getCoinsCredit() {
+        return coinsCredit;
+    }
+
+    public ArrayList<FivePence> getFives() {
+        return fives;
+    }
+
+    public ArrayList<TenPence> getTens() {
+        return tens;
+    }
+
+    public ArrayList<TwentyPence> getTwenties() {
+        return twenties;
+    }
+
+    public ArrayList<FiftyPence> getFifties() {
+        return fifties;
+    }
+
+    public ArrayList<OnePound> getPounds() {
+        return pounds;
+    }
+
+    public ArrayList<TwoPound> getTwoPounds() {
+        return twoPounds;
+    }
+
+    public ArrayList<Coin> getCoinReturn() {
+        return this.coinReturn.getCoins();
     }
 
     public int countCoinsInCoinsCredit() {
         return this.coinsCredit.size();
     }
 
+    public int countCoins(ArrayList<Coin> coins){
+        return coins.size();
+    }
+
     public int countCoinsInCoinReturn() {
-        return this.coinReturn.countCoins();
+        return this.getCoinReturn().size();
     }
 
     public int getBalance(ArrayList<Coin> coins) {
@@ -47,20 +89,25 @@ public class VendingMachine {
         return total;
     }
 
-    public void addCoinToTakings(Coin coin) {
-        this.takings.add(coin);
+    public void addToFives(FivePence fivePence) {
+        this.fives.add(fivePence);
+    }
+
+    public void addToTens(TenPence tenPence) {
+        this.tens.add(tenPence);
+    }
+
+    public void addToTwenties(TwentyPence twentyPence) {
+        this.twenties.add(twentyPence);
     }
 
     public int getCoinsCreditValue() {
-        return getBalance(this.coinsCredit);
+        return getBalance(this.getCoinsCredit());
     }
 
-    public int getTakingsValue() {
-        return getBalance(this.takings);
-    }
 
     public int getCoinReturnValue() {
-        return getBalance(this.coinReturn.getCoins());
+        return getBalance(this.getCoinReturn());
     }
 
 
@@ -99,15 +146,17 @@ public class VendingMachine {
 
     public Product buyProduct (DrawerCode drawerCode) {
 // tried putting this.moveCoinsCreditToTakings(); in here but test failed on number of products check???????
+
         Product returnedProduct = null;
         if (this.checkEnoughPaidIn(drawerCode)) {
+            this.moveCoinsCreditToTakings();
             for (Drawer drawer : this.drawers) {
                 if (drawer.getDrawerCode() == drawerCode) {
                         returnedProduct = drawer.returnProduct();
                 }
             }
         }
-        this.moveCoinsCreditToTakings();  //works down here
+         //works down here
             return returnedProduct;
     }
 
@@ -116,30 +165,61 @@ public class VendingMachine {
         this.coinReturn.addCoin(coin);
     }
 
-    public void moveCoinToTakings(Coin coin) {
-        Coin movedCoin = this.removeCoinFromCoinsCredit(coin);
-        this.addCoinToTakings(movedCoin);
+    public void addCoinToTakings(Coin coin) {
+        if (coin.getCoinType() == CoinType.FIVE) {
+            this.fives.add((FivePence) coin);
+        } else if (coin.getCoinType() == CoinType.TEN) {
+            this.tens.add((TenPence) coin);
+        } else if (coin.getCoinType() == CoinType.TWENTY) {
+            this.twenties.add((TwentyPence) coin);
+        } else if (coin.getCoinType() == CoinType.FIFTY) {
+            this.fifties.add((FiftyPence) coin);
+        } else if (coin.getCoinType() == CoinType.ONEPOUND) {
+            this.pounds.add((OnePound) coin);
+        } else if (coin.getCoinType() == CoinType.TWOPOUND) {
+            this.twoPounds.add((TwoPound) coin);
+        }
     }
 
+
+    public Coin removeCoinFromTakings(Coin coin) {
+        if (coin.getCoinType() == CoinType.FIVE) {
+           return this.fives.remove(0);
+        } else if (coin.getCoinType() == CoinType.TEN) {
+            return this.tens.remove(0);
+        } else if (coin.getCoinType() == CoinType.TWENTY) {
+            return this.twenties.remove(0);
+        } else if (coin.getCoinType() == CoinType.FIFTY) {
+            return this.fifties.remove(0);
+        } else if (coin.getCoinType() == CoinType.ONEPOUND) {
+            return this.pounds.remove(0);
+        }
+        return this.twoPounds.remove(0);
+    }
+
+
     public ArrayList<Coin> removeCoinsCredit() {
-        ArrayList<Coin> removedCoins = ((ArrayList<Coin>) this.coinsCredit.clone());
+        ArrayList<Coin> removedCoins = (this.coinsCredit);
         this.coinsCredit.clear();
         return removedCoins;
     }
 
     public void moveCoinsCreditToTakings() {
-        this.takings.addAll(this.removeCoinsCredit());
+        for (Coin coin : this.getCoinsCredit()){
+            addCoinToTakings(coin);
+        }
+        this.getCoinsCredit().clear();
     }
 
-    public void moveCoinToCoinReturn(Coin coin) {
-        Coin movedCoin = this.removeCoinFromTakings(coin);
+    public void moveFiveToCoinReturn() {
+        FivePence movedCoin = this.fives.remove(0);
         this.addCoinToCoinReturn(movedCoin);
     }
 
-    private Coin removeCoinFromTakings(Coin coin) {
-        int index = this.takings.indexOf(coin);
-        return this.takings.remove(index);
-    }
+
+
+
+
 
     public int calculateChange(DrawerCode drawerCode) {
         int change = 0;
@@ -169,6 +249,34 @@ public class VendingMachine {
 
     public int getNumberOf5sInChange(int change) {
         return change / 5;
+    }
+
+    public int countCoinsInTakings() {
+        return this.fives.size() +
+                this.tens.size() +
+                this.twenties.size() +
+                this.fifties.size() +
+                this.pounds.size() +
+                this.twoPounds.size();
+    }
+
+
+    public int countTakings() {
+       return this.fives.size()*5 +
+        this.tens.size()*10 +
+        this.twenties.size()*20 +
+        this.fifties.size()*50 +
+        this.pounds.size()*100 +
+        this.twoPounds.size()*200;
+    }
+
+    public void moveCoinFromTakingsToCoinReturn(Coin coin) {
+        Coin movedCoin = this.removeCoinFromTakings(coin);
+        this.addCoinToCoinReturn(movedCoin);
+    }
+
+    public void clearCoinsCredit() {
+        this.getCoinsCredit().clear();
     }
 }
 
