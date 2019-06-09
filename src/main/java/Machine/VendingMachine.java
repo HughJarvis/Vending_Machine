@@ -311,64 +311,55 @@ public class VendingMachine {
         this.getCoinsCredit().clear();
     }
 
-    public ArrayList<Coin> removeMultipleFivesFromTakings(int numberToRemove) {
+    public void moveMultipleFivesFromTakingsToCoinReturn(int numberToRemove) {
         ArrayList<Coin> removedCoins = new ArrayList<Coin>();
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
             this.removeTwentyFromTakings();
             coinsRemoved += 1;
         }
-        return removedCoins;
     }
 
-    public ArrayList<Coin> removeMultipleTensFromTakings(int numberToRemove) {
+    public void moveMultipleTensFromTakingsToCoinReturn(int numberToRemove) {
         ArrayList<Coin> removedCoins = new ArrayList<Coin>();
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
-            this.removeTenFromTakings();
+            this.addCoinToCoinReturn(this.removeTenFromTakings());
             coinsRemoved += 1;
         }
-        return removedCoins;
     }
 
-    public ArrayList<Coin> removeMultipleTwentiesFromTakings(int numberToRemove) {
-        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+    public void moveMultipleTwentiesFromTakingsToCoinReturn(int numberToRemove) {
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
-            removeTwentyFromTakings();
+            this.addCoinToCoinReturn(this.removeTwentyFromTakings());
             coinsRemoved += 1;
         }
-        return removedCoins;
     }
 
-    public ArrayList<Coin> removeMultipleFiftiesFromTakings(int numberToRemove) {
-        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+    public void moveMultipleFiftiesFromTakingsToCoinReturn(int numberToRemove) {
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
-            this.removeFiftyFromTakings();
+            this.addCoinToCoinReturn(this.removeFiftyFromTakings());
             coinsRemoved += 1;
         }
-        return removedCoins;
     }
 
-    public ArrayList<Coin> removeMultiplePoundsFromTakings(int numberToRemove) {
-        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+    public void moveMultiplePoundsFromTakingsToCoinReturn(int numberToRemove) {
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
-            this.removePoundFromTakings();
+            this.addCoinToCoinReturn(this.removePoundFromTakings());
             coinsRemoved += 1;
         }
-        return removedCoins;
     }
 
-    public ArrayList<Coin> moveMultipleTwoPoundsFromTakingsToCoinReturn(int numberToRemove) {
-        ArrayList<Coin> removedCoins = new ArrayList<Coin>();
+    public void moveMultipleTwoPoundsFromTakingsToCoinReturn(int numberToRemove) {
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
-            this.removeTwoPoundFromTakings();
+            this.addCoinToCoinReturn(this.removeTwoPoundFromTakings());
             coinsRemoved += 1;
         }
-        return removedCoins;
+
     }
 
 
