@@ -156,6 +156,8 @@ public class VendingMachine {
                 }
             }
         }
+//            int change = this.calculateChange(drawerCode);
+//            this.putCorrectChangeInCoinReturn(change);
             return returnedProduct;
     }
 
@@ -179,6 +181,8 @@ public class VendingMachine {
             this.twoPounds.add((TwoPound) coin);
         }
     }
+
+
 
 
     public Coin removeFiveFromTakings() {
@@ -232,6 +236,28 @@ public class VendingMachine {
             removedCoin = this.twoPounds.get(this.twoPounds.size()-1);
             this.twoPounds.remove(this.twoPounds.size()-1);
         }
+        return removedCoin;
+    }
+
+    public Coin removeCoinFromTakings(CoinType coinType) {
+        Coin removedCoin = null;
+        if (coinType == CoinType.FIVE && this.fives.size() > 0){
+            removedCoin = this.fives.get(this.fives.size()-1);
+            this.fives.remove(this.fives.size()-1);
+        } else if (coinType == CoinType.TEN && this.tens.size() > 0){
+            removedCoin = this.tens.get(this.tens.size()-1);
+            this.tens.remove(this.tens.size()-1);
+        } else if (coinType == CoinType.TWENTY && this.twenties.size() > 0){
+            removedCoin = this.twenties.get(this.twenties.size()-1);
+            this.twenties.remove(this.twenties.size()-1);
+        } else if (coinType == CoinType.FIFTY && this.fifties.size() > 0){
+            removedCoin = this.fifties.get(this.fifties.size()-1);
+            this.fifties.remove(this.fifties.size()-1);
+        } else if (this.pounds.size() > 0) {
+            removedCoin = this.pounds.get(this.pounds.size() - 1);
+            this.pounds.remove(this.pounds.size() - 1);
+        }
+
         return removedCoin;
     }
 
@@ -307,15 +333,27 @@ public class VendingMachine {
         this.addCoinToCoinReturn(movedCoin);
     }
 
+    public void moveCoinFromTakingsToCoinReturn(CoinType coinType){
+        this.addCoinToCoinReturn(this.removeCoinFromTakings(coinType));
+    }
+
     public void clearCoinsCredit() {
         this.getCoinsCredit().clear();
+    }
+
+    public void moveMultipleCoinsFromTakingsToCoinReturn(CoinType coinType, int numberToRemove){
+        int coinsRemoved = 0;
+        while (coinsRemoved < numberToRemove){
+            this.addCoinToCoinReturn(this.removeCoinFromTakings(coinType));
+            coinsRemoved += 1;
+        }
     }
 
     public void moveMultipleFivesFromTakingsToCoinReturn(int numberToRemove) {
         ArrayList<Coin> removedCoins = new ArrayList<Coin>();
         int coinsRemoved = 0;
         while (coinsRemoved < numberToRemove){
-            this.removeTwentyFromTakings();
+            this.addCoinToCoinReturn(this.removeFiveFromTakings());
             coinsRemoved += 1;
         }
     }
@@ -353,23 +391,37 @@ public class VendingMachine {
         }
     }
 
-    public void moveMultipleTwoPoundsFromTakingsToCoinReturn(int numberToRemove) {
-        int coinsRemoved = 0;
-        while (coinsRemoved < numberToRemove){
-            this.addCoinToCoinReturn(this.removeTwoPoundFromTakings());
-            coinsRemoved += 1;
-        }
+
+
+
+    public void putCorrectChangeInCoinReturn(int change) {
+        int numberOfCoins = this.getNumberOf100sInChange(change);
+        this.moveMultiplePoundsFromTakingsToCoinReturn(numberOfCoins);
+        int changeLeft = change % 100;
+
+        numberOfCoins = this.getNumberOf50sInChange(changeLeft);
+        this.moveMultipleFiftiesFromTakingsToCoinReturn(numberOfCoins);
+        changeLeft %= 50;
+
+        numberOfCoins = this.getNumberOf20sInChange(changeLeft);
+        this.moveMultipleTwentiesFromTakingsToCoinReturn(numberOfCoins);
+        changeLeft %= 20;
+
+        numberOfCoins = this.getNumberOf10sInChange(changeLeft);
+        this.moveMultipleTensFromTakingsToCoinReturn(numberOfCoins);
+        changeLeft %= 10;
+
+        numberOfCoins = this.getNumberOf5sInChange(changeLeft);
+        this.moveMultipleFivesFromTakingsToCoinReturn(numberOfCoins);
 
     }
 
+    public String displayMessage() {
+        if (this.fives.size() > 3 && this.tens.size() > 3 && this.twenties.size() > 2 && this.fifties.size() > 2 && this.pounds.size() > 1) {
 
-
-//    public int putCorrectChangeInCoinReturn(int change) {
-//        int numberOfCoins = this.getNumberOf100sInChange(change);
-//        int coinsRemoved = 0;
-//
-//        int changeLeft = change % 100;
-//        return changeLeft;
-//    }
+            return "Credit: " + this.getCoinsCreditValue();
+        }
+        return "Use exact change only";
+    }
 }
 
